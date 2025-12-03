@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>船舶可视化系统</title>
+  <!-- 高德地图安全密钥配置（如果需要） -->
+  <script type="text/javascript">
+    // 如果高德地图要求安全密钥，在这里配置
+    // window._AMapSecurityConfig = {
+    //   securityJsCode: '您的安全密钥'
+    // };
+  </script>
+  <!-- 注意：不添加crossorigin，因为高德地图服务器可能未设置CORS头 -->
+  <script src="https://webapi.amap.com/loader.js"></script>
+</head>
+<body>
+  <div id="root"></div>
+  <script type="module" src="/src/index.jsx"></script>
+</body>
+</html>

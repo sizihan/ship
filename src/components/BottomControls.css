@@ -1,0 +1,168 @@
+/* 底部控制栏样式 */
+.bottom-controls {
+  position: fixed;
+  bottom: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 1000;
+  pointer-events: none;
+}
+
+.bottom-controls-content {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 12px 24px;
+  background: rgba(255, 255, 255, 0.2);
+  backdrop-filter: blur(10px);
+  border-radius: 12px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+  pointer-events: auto;
+}
+
+/* 播放/暂停按钮 */
+.play-pause-btn {
+  width: 48px;
+  height: 48px;
+  border: none;
+  border-radius: 50%;
+  font-size: 20px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  opacity: 0.7;
+}
+
+.play-pause-btn.playing {
+  background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
+  color: white;
+}
+
+.play-pause-btn.playing:hover {
+  background: linear-gradient(135deg, #d97706 0%, #b45309 100%);
+  transform: scale(1.05);
+  opacity: 1;
+}
+
+.play-pause-btn.paused {
+  background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+  color: white;
+}
+
+.play-pause-btn.paused:hover {
+  background: linear-gradient(135deg, #059669 0%, #047857 100%);
+  transform: scale(1.05);
+  opacity: 1;
+}
+
+/* 时间进度条容器 */
+.time-slider-wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  min-width: 400px;
+}
+
+.time-slider-bottom {
+  width: 100%;
+  height: 6px;
+  border-radius: 3px;
+  background: #e2e8f0;
+  outline: none;
+  -webkit-appearance: none;
+  appearance: none;
+  cursor: pointer;
+}
+
+.time-slider-bottom::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #2d85f0 0%, #0f4c81 100%);
+  cursor: pointer;
+  box-shadow: 0 2px 8px rgba(45, 133, 240, 0.4);
+  transition: all 0.2s ease;
+}
+
+.time-slider-bottom::-webkit-slider-thumb:hover {
+  transform: scale(1.2);
+  box-shadow: 0 4px 12px rgba(45, 133, 240, 0.6);
+}
+
+.time-slider-bottom::-moz-range-thumb {
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #2d85f0 0%, #0f4c81 100%);
+  cursor: pointer;
+  border: none;
+  box-shadow: 0 2px 8px rgba(45, 133, 240, 0.4);
+  transition: all 0.2s ease;
+}
+
+.time-slider-bottom::-moz-range-thumb:hover {
+  transform: scale(1.2);
+  box-shadow: 0 4px 12px rgba(45, 133, 240, 0.6);
+}
+
+.time-display-bottom {
+  font-size: 12px;
+  color: #666;
+  text-align: center;
+  font-family: 'Courier New', monospace;
+}
+
+.current-time {
+  font-weight: 500;
+  color: #2d85f0;
+}
+
+/* 重置按钮 */
+.reset-btn {
+  width: 48px;
+  height: 48px;
+  border: none;
+  border-radius: 50%;
+  font-size: 20px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
+  color: white;
+  box-shadow: 0 2px 8px rgba(59, 130, 246, 0.2);
+  opacity: 0.7;
+}
+
+.reset-btn:hover {
+  background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%);
+  transform: scale(1.05);
+  box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);
+  opacity: 1;
+}
+
+/* 响应式设计 */
+@media (max-width: 768px) {
+  .bottom-controls-content {
+    padding: 10px 16px;
+    gap: 12px;
+  }
+
+  .time-slider-wrapper {
+    min-width: 200px;
+  }
+
+  .play-pause-btn,
+  .reset-btn {
+    width: 40px;
+    height: 40px;
+    font-size: 16px;
+  }
+}
+
