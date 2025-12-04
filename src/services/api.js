@@ -5,6 +5,14 @@ import axios from 'axios';
 // 生产环境: 使用 .env.production 中的 VITE_API_BASE_URL
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'http://localhost:5000/api';
 
+// 打印 API 配置信息（开发和生产环境都打印，方便调试）
+console.log('🔧 API 配置信息:');
+console.log('  - API_BASE_URL:', API_BASE_URL);
+console.log('  - 环境变量 VITE_API_BASE_URL:', import.meta.env.VITE_API_BASE_URL || '(未设置)');
+console.log('  - 当前环境:', import.meta.env.MODE);
+console.log('  - 是否为生产环境:', import.meta.env.PROD);
+console.log('  - 当前域名:', window.location.origin);
+
 // 创建axios实例，添加更多配置
 const apiClient = axios.create({
   baseURL: API_BASE_URL,
@@ -17,7 +25,8 @@ const apiClient = axios.create({
 // 请求拦截器
 apiClient.interceptors.request.use(
   (config) => {
-    console.log('API请求:', config.method?.toUpperCase(), config.url);
+    const fullUrl = config.baseURL + config.url;
+    console.log('📤 API请求:', config.method?.toUpperCase(), fullUrl);
     return config;
   },
   (error) => {
@@ -29,15 +38,39 @@ apiClient.interceptors.request.use(
 // 响应拦截器
 apiClient.interceptors.response.use(
   (response) => {
-    console.log('API响应:', response.config?.url, response.status);
+    const fullUrl = response.config.baseURL + response.config.url;
+    console.log('✅ API响应成功:', fullUrl, response.status);
     return response;
   },
   (error) => {
-    console.error('响应错误:', error.config?.url, error.message);
+    const fullUrl = error.config ? (error.config.baseURL + error.config.url) : '未知URL';
+    console.error('❌ API响应错误:', fullUrl);
+    console.error('   错误消息:', error.message);
+    
     if (error.response) {
-      console.error('错误详情:', error.response.status, error.response.data);
+      // 服务器返回了响应，但状态码不是 2xx
+      console.error('   状态码:', error.response.status);
+      console.error('   响应数据:', error.response.data);
     } else if (error.request) {
-      console.error('请求已发送但没有收到响应:', error.request);
+      // 请求已发送但没有收到响应
+      console.error('   ⚠️ 请求已发送但没有收到响应');
+      console.error('   可能的原因:');
+      console.error('     1. 后端服务未运行');
+      console.error('     2. 网络连接问题');
+      console.error('     3. 防火墙阻止');
+      console.error('     4. CORS 跨域问题');
+      console.error('     5. 混合内容问题 (HTTPS 访问 HTTP)');
+      
+      // 检查是否是混合内容问题
+      const currentProtocol = window.location.protocol;
+      const apiProtocol = error.config?.baseURL?.split(':')[0];
+      if (currentProtocol === 'https:' && apiProtocol === 'http') {
+        console.error('   🚨 检测到混合内容问题!');
+        console.error('     HTTPS 页面无法访问 HTTP API');
+        console.error('     解决方案: 后端需要使用 HTTPS 或使用代理');
+      }
+    } else {
+      console.error('   请求配置错误:', error.message);
     }
     return Promise.reject(error);
   }
