@@ -2,13 +2,15 @@ import axios from 'axios';
 
 // 使用环境变量，如果不存在则使用默认值
 // 开发环境: 使用 .env.development 中的 VITE_API_BASE_URL（本地开发）
-// 生产环境: 使用相对路径通过 Vercel 代理访问后端（解决混合内容问题）
+// 生产环境: 强制使用相对路径通过 Vercel 代理访问后端（解决混合内容问题）
 // 
 // 工作原理：
 // - 开发环境: 直接连接本地后端 http://localhost:5000/api
-// - 生产环境: 使用相对路径 /api/backend，通过 vercel.json 中的 rewrites 代理到后端
-const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 
-  (import.meta.env.PROD ? '/api/backend' : 'http://localhost:5000/api');
+// - 生产环境: 强制使用相对路径 /api/backend，通过 vercel.json 中的 rewrites 代理到后端
+// 注意: 生产环境强制使用代理路径，忽略环境变量中的绝对路径，避免混合内容问题
+const API_BASE_URL = import.meta.env.PROD 
+  ? '/api/backend'  // 生产环境强制使用 Vercel 代理
+  : (import.meta.env.VITE_API_BASE_URL || 'http://localhost:5000/api');
 
 // 打印 API 配置信息（开发和生产环境都打印，方便调试）
 console.log('🔧 API 配置信息:');
